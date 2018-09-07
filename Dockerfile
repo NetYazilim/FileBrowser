@@ -1,5 +1,5 @@
 FROM golang:1.10-alpine
-ARG VERSION=v1.9.0
+ARG VERSION=v1.10.0
 RUN apk add --no-cache git 
 RUN apk add --update openssl
 WORKDIR /go/src/github.com/filebrowser/filebrowser
