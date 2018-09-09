@@ -1,0 +1,27 @@
+FROM golang:1.11-alpine
+RUN apk add --upgrade --no-cache ca-certificates openssl curl git yarn && \
+    mkdir -p /go/src/github.com/filebrowser && \
+    cd /go/src/github.com/filebrowser && \
+    git clone --recurse-submodules https://github.com/filebrowser/filebrowser.git && \
+	go get github.com/GeertJohan/go.rice/rice && \
+    curl -sL https://git.io/goreleaser -o /go/bin/goreleaser && \
+    chmod +x /go/bin/goreleaser && \
+    cd /go/src/github.com/filebrowser/filebrowser/build && \
+    ./build_assets.sh && \
+    cd /go/src/github.com/filebrowser/filebrowser/cli && \
+	go get -v ./...  && \
+	CGO_ENABLED=0 go build -a -o filebrowser
+	
+FROM scratch
+LABEL maintainer "Levent SAGIROGLU <LSagiroglu@gmail.com>"
+
+EXPOSE 80 
+ENV FB_SCOPE "/shared" 
+ENV FB_DATABASE "/filebrowser/fb.db" 
+ENV FB_PORT "80"
+VOLUME /shared 
+
+COPY --from=0 /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/ca-certificates.crt
+COPY --from=0 /go/src/github.com/filebrowser/filebrowser/cli/filebrowser /filebrowser/filebrowser
+COPY README.md /shared/README.md 
+ENTRYPOINT ["/filebrowser/filebrowser"]
