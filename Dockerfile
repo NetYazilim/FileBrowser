@@ -1,6 +1,6 @@
 FROM netyazilim/alpine-base:3.9
 
-ARG VERSION=v2.0.10
+ARG VERSION=v2.0.12
 
 WORKDIR /tmp
 RUN apk add --upgrade --no-cache ca-certificates  wget tar
