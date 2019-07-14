@@ -1,4 +1,4 @@
-FROM netyazilim/alpine-base:3.9
+FROM netyazilim/alpine-base:3.10
 
 ARG VERSION=v2.0.12
 
@@ -7,7 +7,7 @@ RUN apk add --upgrade --no-cache ca-certificates  wget tar
 RUN wget --no-cache --quiet https://github.com/filebrowser/filebrowser/releases/download/${VERSION}/linux-amd64-filebrowser.tar.gz && \
 tar -xvzf  linux-amd64-filebrowser.tar.gz
 
-#FROM netyazilim/alpine-base:3.9
+#FROM netyazilim/alpine-base:3.10
 
 FROM scratch
 LABEL maintainer "Levent SAGIROGLU <LSagiroglu@gmail.com>"
